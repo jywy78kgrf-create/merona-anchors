@@ -1,18 +1,24 @@
-# merona · integrity anchors
+# merona anchors
 
-**merona** is an independent, open measurement index for x402 / agentic-commerce
-settlement. Each day's snapshot of the dataset is captured immutably, and its
-SHA-256 digest is committed here **before** the numbers are published.
+Nightly SHA-256 integrity anchors for the [merona](https://merona.io)
+x402 settlement index. Each line in `anchors.jsonl` fingerprints one day's
+immutable snapshot before publication: the data stays private, but the hash
+plus this repo's push timestamp proves data matching it existed on that date.
+When datasets publish, hash them and compare.
 
-Each line of `anchors.jsonl` carries the SHA-256 digest of one day's snapshot
-files (plus a combined digest). GitHub's public commit timestamps then attest
-**when that data existed** — proof we can't quietly backdate or rewrite our own
-history — without the anchor itself revealing anything about the contents.
+The same hashes are attested nightly **on Base** via EAS by merona's
+attester wallet:
 
-Anyone can verify a published snapshot against its anchor:
+    0x644678AD37833C0d52f0170f1F73A5e62Bc3e6d5
 
-    sha256sum <snapshot files>   # must match files_sha256 for that date
+Browse them at
+[base.easscan.org](https://base.easscan.org/address/0x644678AD37833C0d52f0170f1F73A5e62Bc3e6d5)
+— each attestation's `combinedSha256` must equal the `combined_sha256` here,
+byte for byte. Two independent ledgers, one hash: git proves the history,
+consensus proves it from the day of attestation forward.
 
-A hash proves existence and integrity; it discloses nothing on its own. Anchors
-are append-only and pushed nightly by an automated job. The datasets themselves
-live in the main repo: github.com/jywy78kgrf-create/merona
+Only attestations from the address above are merona's. The wallet carries a
+matching on-chain identity attestation pointing back at merona.io and this
+repo, so the binding holds in both directions.
+
+This repo is append-only and is never force-pushed.
